@@ -1,0 +1,177 @@
+import React from 'react';
+import { Calendar, Flag, CreditCard, User, Shield, Car, Accessibility, Globe, Link as LinkIcon, Mail, Phone } from 'lucide-react';
+import * as Si from 'react-icons/si';
+import * as Fa from 'react-icons/fa';
+import { IconType } from 'react-icons';
+
+// Mapping for all supported labels
+// Ensure we use the exact same fallbacks as we decided earlier (e.g. LinkIcon for missing brands)
+
+const ICON_MAP: Record<string, any> = {
+    // Personal Details
+    'Date of Birth': Calendar,
+    'Nationality': Flag,
+    'Passport or Id': CreditCard,
+    'Marital status': User,
+    'Military Service': Shield,
+    'Driving License': Car,
+    'Gender/Pronoun': User,
+    'Disability': Accessibility,
+    'Visa': Globe,
+
+    // Socials & Links
+    'Website': LinkIcon,
+    'LinkedIn': Si.SiLinkedin,
+    'GitHub': Si.SiGithub,
+    'GitBook': Si.SiGitbook,
+    'Medium': Si.SiMedium,
+    'ORCID': Si.SiOrcid,
+    'Skype': Fa.FaSkype,
+    'Bluesky': Si.SiBluesky,
+    'Threads': Si.SiThreads,
+    'X': Si.SiX,
+    'Discord': Si.SiDiscord,
+    'Dribbble': Si.SiDribbble,
+    'Behance': Si.SiBehance,
+    'Stack Overflow': Si.SiStackoverflow,
+    'GitLab': Si.SiGitlab,
+    'Quora': Si.SiQuora,
+    'Facebook': Si.SiFacebook,
+    'Instagram': Si.SiInstagram,
+    'WeChat': Si.SiWechat,
+    'Hugging Face': Si.SiHuggingface,
+    'Kaggle': Si.SiKaggle,
+    'YouTube': Si.SiYoutube,
+    'TikTok': Si.SiTiktok,
+    'Signal': Si.SiSignal,
+    'Telegram': Si.SiTelegram,
+    'WhatsApp': Si.SiWhatsapp,
+    'PayPal': Si.SiPaypal,
+    'Product Hunt': Si.SiProducthunt,
+    'ArtStation': Si.SiArtstation,
+    'CodePen': Si.SiCodepen,
+    'Fiverr': Si.SiFiverr,
+    'Hashnode': Si.SiHashnode,
+    'Pluralsight': Si.SiPluralsight,
+    'ResearchGate': Si.SiResearchgate,
+    'IMDb': Si.SiImdb,
+    'Qwiklabs': Si.SiGooglecloud,
+    'Google Play': Si.SiGoogleplay,
+    'Tumblr': Si.SiTumblr,
+    'Tripadvisor': Si.SiTripadvisor,
+    'Yelp': Si.SiYelp,
+    'Slack': Si.SiSlack,
+    'Flickr': Si.SiFlickr,
+    'ReverbNation': Si.SiReverbnation,
+    'DeviantArt': Si.SiDeviantart,
+    'Vimeo': Si.SiVimeo,
+    'Reddit': Si.SiReddit,
+    'Pinterest': Si.SiPinterest,
+    'Blogger': Si.SiBlogger,
+    'Spotify': Si.SiSpotify,
+    'Bitcoin': Si.SiBitcoin,
+    'App Store': Si.SiAppstore,
+    'WordPress': Si.SiWordpress,
+    'LeetCode': Si.SiLeetcode,
+    'CodeChef': Si.SiCodechef,
+    'Codecademy': Si.SiCodecademy,
+    'Codeforces': Si.SiCodeforces,
+    'VSCO': Si.SiVsco,
+    'Snapchat': Si.SiSnapchat,
+    'Upwork': Si.SiUpwork,
+    'GeeksforGeeks': Si.SiGeeksforgeeks,
+    'Google Scholar': Si.SiGooglescholar,
+    'LINE': Si.SiLine,
+    'TryHackMe': Si.SiTryhackme,
+    'Coursera': Si.SiCoursera,
+    'Proton Mail': Si.SiProtonmail,
+    'HackerEarth': Si.SiHackerearth,
+    'Codewars': Si.SiCodewars,
+    'Hack The Box': Si.SiHackthebox,
+    'Bitbucket': Si.SiBitbucket,
+    'Gitea': Si.SiGitea,
+    'Xing': Si.SiXing,
+    '500px': Si.Si500Px,
+    'dev.to': Si.SiDevdotto,
+    'HackerRank': Si.SiHackerrank,
+    'Tencent QQ': Si.SiTencentqq,
+    'Ethereum': Si.SiEthereum,
+    'StopStalk': LinkIcon,
+    'Substack': Si.SiSubstack,
+    'Toptal': Si.SiToptal,
+    'Polywork': Si.SiPolywork,
+    'Replit': Si.SiReplit,
+    'Credly': Si.SiCredly,
+    'Figma': Si.SiFigma,
+    'Gmail': Si.SiGmail,
+    'Tableau': Si.SiTableau,
+    'npm': Si.SiNpm,
+    'HackerOne': Si.SiHackerone,
+    'Freelancer': Si.SiFreelancer,
+    'DataCamp': Si.SiDatacamp,
+    'Mastodon': Si.SiMastodon,
+    'Letterboxd': Si.SiLetterboxd,
+    'Zoom': Si.SiZoom,
+    'Audioboom': Fa.FaPodcast,
+    'SoundCloud': Si.SiSoundcloud,
+    'Soundcharts': Fa.FaMusic,
+    'KakaoTalk': Si.SiKakaotalk,
+    'Salesforce': Si.SiSalesforce,
+    'Itch.io': Si.SiItchdotio,
+    'Sololearn': Si.SiSololearn,
+    'OpenSea': Si.SiOpensea,
+    'Devpost': LinkIcon,
+    'Linktree': Si.SiLinktree,
+    'CodinGame': Si.SiCodingame,
+    'Coding Ninjas': LinkIcon,
+    'Unsplash': Si.SiUnsplash,
+    'Indeed': Si.SiIndeed,
+    'Handshake': Si.SiHandshake,
+    'Steam': Si.SiSteam,
+    'Google': Si.SiGoogle,
+    'Calendly': Si.SiCalendly,
+    'AngelList': LinkIcon,
+    'Deezer': LinkIcon,
+    'ATS CV': LinkIcon,
+    'Khan Academy': Si.SiKhanacademy,
+    'Udemy': Si.SiUdemy,
+    'Udacity': Si.SiUdacity,
+    'Twitch': Si.SiTwitch,
+    'Trello': Si.SiTrello,
+    'Evernote': Si.SiEvernote,
+    'Canva': Si.SiCanva,
+    'Etsy': Si.SiEtsy,
+    'Google Maps': Si.SiGooglemaps,
+    'Google Podcasts': LinkIcon,
+    'Apple Podcasts': Si.SiApplepodcasts,
+    'Stitcher': Si.SiStitcher,
+    'Amazon Music': Si.SiAmazon,
+    'iHeartRadio': Si.SiIheartradio,
+    'TuneIn': LinkIcon,
+    'Pocket Casts': Si.SiPocketcasts,
+    'Pandora': Si.SiPandora,
+    'YouTube Music': Si.SiYoutubemusic,
+    'Tidal': Si.SiTidal,
+    'Bandcamp': Si.SiBandcamp,
+    'Scopus': LinkIcon,
+};
+
+export const getSocialIcon = (label: string) => {
+    // Normalization
+    // 1. Try exact match
+    if (ICON_MAP[label]) return ICON_MAP[label];
+
+    // 2. Try case-insensitive match
+    const lowerLabel = label.toLowerCase();
+    const key = Object.keys(ICON_MAP).find(k => k.toLowerCase() === lowerLabel);
+    if (key) return ICON_MAP[key];
+
+    // 3. Fallback logic similar to old templates (contains check)
+    if (lowerLabel.includes('linkedin')) return Si.SiLinkedin;
+    if (lowerLabel.includes('website')) return LinkIcon;
+    if (lowerLabel.includes('mail')) return Mail;
+    if (lowerLabel.includes('phone')) return Phone;
+
+    // 4. Default
+    return LinkIcon;
+};
